@@ -5,7 +5,7 @@
   (:import [goog.net WebSocket]
            [goog.net.WebSocket EventType]))
 
-(def ^:private socket (atom 0))
+(def ^:private socket (atom nil))
 
 (def ^:private channel (chan))
 
@@ -52,7 +52,8 @@
   ([url]
     (open url nil))
   ([url protocol]
-    (.open @socket url protocol)
+   (when @socket
+    (.open @socket url protocol))
     channel))
 
 (defn send
@@ -61,14 +62,17 @@
   message - string, message to send
   "
   [message]
-  (.send @socket message))
+  (when @socket
+    (.send @socket message)))
 
 (defn close
   "Close an open web socket connection"
   []
-  (.close @socket))
+  (when @socket
+    (.close @socket)))
 
 (defn open?
   "Checks to see if the web socket is open. Returns a boolean"
   []
-  (.isOpen @socket))
+  (when @socket
+    (.isOpen @socket)))
