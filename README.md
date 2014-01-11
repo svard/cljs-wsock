@@ -15,6 +15,22 @@ and add
 ```
 as dependency in project.clj
 
+Example
+
+```clojure
+(ns example
+  (:require-macros [cljs.core.async.macros :refer [go]])
+  (:require [cljs-wsock.core :as ws]
+            [cljs.core.async :refer [<!]]))
+
+(defn websocket []
+  (go
+    (let [ch (ws/open "ws://localhost:8080")
+          [status event] (<! ch)]
+      (if (= :message status)
+            (prn (str "Received message " (.-message event)))))))
+```
+
 ## License
 
 Copyright © 2014 Kristofer Svärd

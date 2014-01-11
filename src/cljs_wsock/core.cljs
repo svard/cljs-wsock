@@ -29,6 +29,14 @@
   url - string, specifying which server to connect to
 
   protocol - string, optional, describing what subprotocol to use
+
+  auto-reconnect - boolean, optional, should the web socket automatically try to reconnect.
+                   True by default.
+
+  get-next-reconnect - number or fn, optional, function for obtaining the time until next
+                       reconnect attempt. fn will be passed the reconnect attempt
+                       count and should return a positive integer representing the
+                       time in milliseconds until next reconnect attempt.
   "
   ([url]
    (open url nil))
