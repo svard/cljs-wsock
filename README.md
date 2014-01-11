@@ -6,14 +6,9 @@ A small project for teaching myself clojurescript and core.async library.
 
 ## Usage
 
-```sh
-lein install
-```
-and add
 ```clojure
-[cljs-wsock "0.1.1-SNAPSHOT"]
+[cljs-wsock "0.1.1"]
 ```
-as dependency in project.clj
 
 Example
 
