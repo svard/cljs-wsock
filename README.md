@@ -11,7 +11,7 @@ lein install
 ```
 and add
 ```clojure
-[cljs-wsock "0.1.0-SNAPSHOT"]
+[cljs-wsock "0.1.1-SNAPSHOT"]
 ```
 as dependency in project.clj
 

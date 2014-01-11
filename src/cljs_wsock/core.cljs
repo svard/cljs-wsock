@@ -21,25 +21,6 @@
   (events/listen @socket EventType/ERROR (fn [e]
                                           (put! channel [:error e]))))
 
-(defn init
-  "Initializes a new web socket connection
-
-  auto-reconnect - boolean, optional, should the web socket automatically try to reconnect.
-                   True by default.
-
-  get-next-reconnect - number or fn, optional, function for obtaining the time until next
-                       reconnect attempt. fn will be passed the reconnect attempt
-                       count and should return a positive integer representing the
-                       time in milliseconds until next reconnect attempt.
-  "
-  ([]
-   (init nil nil))
-  ([auto-reconnect]
-   (init auto-reconnect nil))
-  ([auto-reconnect get-next-reconnect]
-   (reset! socket (WebSocket. auto-reconnect get-next-reconnect))
-   (listen)))
-
 (defn open
   "Opens a connection to the specified url. Returns a channel that will
   receive a vector [type event] where type can be :opened, :message,
@@ -50,11 +31,16 @@
   protocol - string, optional, describing what subprotocol to use
   "
   ([url]
-    (open url nil))
+   (open url nil))
   ([url protocol]
-   (when @socket
-    (.open @socket url protocol))
-    channel))
+   (open url protocol nil))
+  ([url protocol auto-reconnect]
+   (open url protocol auto-reconnect nil))
+  ([url protocol auto-reconnect get-next-reconnect]
+   (reset! socket (WebSocket. auto-reconnect get-next-reconnect))
+   (listen)
+   (.open @socket url protocol)
+   channel))
 
 (defn send
   "Sends a message on an open web socket connection
