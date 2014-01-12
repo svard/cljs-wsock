@@ -1,6 +1,6 @@
 # cljs-wsock
 
-Clojurescript wrapper for goog.net.WebSocket.
+Clojurescript async wrapper for goog.net.WebSocket.
 
 A small project for teaching myself clojurescript and core.async library.
 
