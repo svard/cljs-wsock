@@ -7,11 +7,9 @@
 
 (def ^:private socket (atom nil))
 
-(def ^:private channel (chan))
-
 (defn ^:private listen
   "Sets up event listeners for the websocket connection"
-  []
+  [channel]
   (events/listen @socket EventType/OPENED (fn [e]
                                            (put! channel [:opened e])))
   (events/listen @socket EventType/MESSAGE (fn [e]
@@ -45,10 +43,11 @@
   ([url protocol auto-reconnect]
    (open url protocol auto-reconnect nil))
   ([url protocol auto-reconnect get-next-reconnect]
-   (reset! socket (WebSocket. auto-reconnect get-next-reconnect))
-   (listen)
-   (.open @socket url protocol)
-   channel))
+   (let [channel (chan)]
+     (reset! socket (WebSocket. auto-reconnect get-next-reconnect))
+     (listen channel)
+     (.open @socket url protocol)
+     channel)))
 
 (defn send
   "Sends a message on an open web socket connection

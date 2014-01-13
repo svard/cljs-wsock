@@ -1,4 +1,4 @@
-(defproject cljs-wsock "0.1.1"
+(defproject cljs-wsock "0.1.2"
   :description "Clojurescript wrapper for goog.net.WebSocket"
   :url "https://github.com/svard/cljs-wsock"
   :license {:name "Eclipse Public License"
