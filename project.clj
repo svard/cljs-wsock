@@ -1,4 +1,4 @@
-(defproject cljs-wsock "0.1.2"
+(defproject cljs-wsock "0.2.0"
   :description "Clojurescript wrapper for goog.net.WebSocket"
   :url "https://github.com/svard/cljs-wsock"
   :license {:name "Eclipse Public License"
@@ -12,11 +12,9 @@
   :source-paths ["src"]
 
   :cljsbuild {
-              :builds [{
-                         :id "dev"
-                         :source-paths ["src"]
-                         :compiler {
-                                    :output-to "main.js"
-                                    :output-dir "out"
-                                    :optimizations :none
-                                    :source-map true}}]})
+              :builds {
+                       :dev {
+                             :source-paths ["src"]
+                             :compiler {
+                                        :output-to "main.js"
+                                        :optimizations :whitespace}}}})

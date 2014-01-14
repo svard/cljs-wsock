@@ -7,10 +7,10 @@ A small project for teaching myself clojurescript and core.async library.
 ## Usage
 
 ```clojure
-[cljs-wsock "0.1.2"]
+[cljs-wsock "0.2.0"]
 ```
 
-Example
+## Example
 
 ```clojure
 (ns example
@@ -20,7 +20,7 @@ Example
 
 (defn websocket []
   (go
-    (let [ch (ws/open "ws://localhost:8080")
+    (let [ch (ws/open! "ws://localhost:8080")
           [status event] (<! ch)]
       (if (= :message status)
             (prn (str "Received message " (.-message event)))))))

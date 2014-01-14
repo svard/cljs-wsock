@@ -19,7 +19,7 @@
   (events/listen @socket EventType/ERROR (fn [e]
                                           (put! channel [:error e]))))
 
-(defn open
+(defn open!
   "Opens a connection to the specified url. Returns a channel that will
   receive a vector [type event] where type can be :opened, :message,
   :closed or :error
@@ -37,11 +37,11 @@
                        time in milliseconds until next reconnect attempt.
   "
   ([url]
-   (open url nil))
+   (open! url nil))
   ([url protocol]
-   (open url protocol nil))
+   (open! url protocol nil))
   ([url protocol auto-reconnect]
-   (open url protocol auto-reconnect nil))
+   (open! url protocol auto-reconnect nil))
   ([url protocol auto-reconnect get-next-reconnect]
    (let [channel (chan)]
      (reset! socket (WebSocket. auto-reconnect get-next-reconnect))
