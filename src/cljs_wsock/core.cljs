@@ -3,20 +3,20 @@
   (:require [goog.events :as events]
             [cljs.core.async :refer [chan put!]])
   (:import [goog.net WebSocket]
-           [goog.net.WebSocket EventType]))
+           goog.net.WebSocket.EventType))
 
 (def ^:private socket (atom nil))
 
 (defn ^:private listen
   "Sets up event listeners for the websocket connection"
   [channel]
-  (events/listen @socket EventType/OPENED (fn [e]
+    (events/listen @socket goog.net.WebSocket.EventType.OPENED (fn [e]
                                            (put! channel [:opened e])))
-  (events/listen @socket EventType/MESSAGE (fn [e]
+    (events/listen @socket goog.net.WebSocket.EventType.MESSAGE (fn [e]
                                             (put! channel [:message e])))
-  (events/listen @socket EventType/CLOSED (fn [e]
+    (events/listen @socket goog.net.WebSocket.EventType.CLOSED (fn [e]
                                            (put! channel [:closed e])))
-  (events/listen @socket EventType/ERROR (fn [e]
+    (events/listen @socket goog.net.WebSocket.EventType.ERROR (fn [e]
                                           (put! channel [:error e]))))
 
 (defn open!
