@@ -7,7 +7,7 @@ A small project for teaching myself clojurescript and core.async library.
 ## Usage
 
 ```clojure
-[cljs-wsock "0.2.0"]
+[cljs-wsock "0.2.1"]
 ```
 
 ## Example
