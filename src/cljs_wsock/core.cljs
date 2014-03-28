@@ -1,7 +1,8 @@
 (ns cljs-wsock.core
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [goog.events :as events]
-            [cljs.core.async :refer [chan put!]])
+            [cljs.core.async :refer [chan put!]]
+            [cljs.reader :refer [read-string]])
   (:import [goog.net WebSocket]
            goog.net.WebSocket.EventType))
 
@@ -10,19 +11,19 @@
 (defn ^:private listen
   "Sets up event listeners for the websocket connection"
   [channel]
-    (events/listen @socket goog.net.WebSocket.EventType.OPENED (fn [e]
-                                           (put! channel [:opened e])))
+    (events/listen @socket goog.net.WebSocket.EventType.OPENED (fn []
+                                           (put! channel [:opened])))
     (events/listen @socket goog.net.WebSocket.EventType.MESSAGE (fn [e]
-                                            (put! channel [:message e])))
-    (events/listen @socket goog.net.WebSocket.EventType.CLOSED (fn [e]
-                                           (put! channel [:closed e])))
-    (events/listen @socket goog.net.WebSocket.EventType.ERROR (fn [e]
-                                          (put! channel [:error e]))))
+                                            (put! channel [:message (read-string (.-message e))])))
+    (events/listen @socket goog.net.WebSocket.EventType.CLOSED (fn []
+                                           (put! channel [:closed])))
+    (events/listen @socket goog.net.WebSocket.EventType.ERROR (fn []
+                                          (put! channel [:error]))))
 
 (defn open!
   "Opens a connection to the specified url. Returns a channel that will
   receive a vector [type event] where type can be :opened, :message,
-  :closed or :error
+  :closed or :error. In case of :message event will contain the received message.
 
   url - string, specifying which server to connect to
 
@@ -52,11 +53,13 @@
 (defn send
   "Sends a message on an open web socket connection
 
-  message - string, message to send
+  message - message to send, will be converted to string
   "
   [message]
   (when @socket
-    (.send @socket message)))
+    (if (= (type message) js/String)
+      (.send @socket message)
+      (.send @socket (pr-str message)))))
 
 (defn close
   "Close an open web socket connection"

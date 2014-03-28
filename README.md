@@ -7,7 +7,7 @@ A small project for teaching myself clojurescript and core.async library.
 ## Usage
 
 ```clojure
-[cljs-wsock "0.2.1"]
+[cljs-wsock "0.3.0"]
 ```
 
 ## Example
@@ -22,8 +22,11 @@ A small project for teaching myself clojurescript and core.async library.
   (go
     (let [ch (ws/open! "ws://localhost:8080")
           [status event] (<! ch)]
-      (if (= :message status)
-            (prn (str "Received message " (.-message event)))))))
+      (case status
+        :opened (prn "Connection opened")
+        :message (prn (str "Received message " event))
+        :closed (prn "Connection closed")
+        :error (prn "Error")))))
 ```
 
 ## License
