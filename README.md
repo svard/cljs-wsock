@@ -6,9 +6,7 @@ A small project for teaching myself clojurescript and core.async library.
 
 ## Usage
 
-```clojure
-[cljs-wsock "0.4.0"]
-```
+[![Clojars Project](http://clojars.org/cljs-wsock/latest-version.svg)](http://clojars.org/cljs-wsock)
 
 ## Example
 
